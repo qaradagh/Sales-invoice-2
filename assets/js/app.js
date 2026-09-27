@@ -4,11 +4,11 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'shilan-invoice-v1';
-  var THEME_KEY = 'shilan-invoice-theme';
-  var ZOOM_KEY = 'shilan-invoice-zoom';
-  var ARCHIVE_KEY = 'shilan-invoice-archive-v1';
-  var CONTACTS_KEY = 'shilan-invoice-contacts-v1';
+  var STORAGE_KEY = 'shilan-invoice-v2';
+  var THEME_KEY = 'shilan-invoice-v2-theme';
+  var ZOOM_KEY = 'shilan-invoice-v2-zoom';
+  var ARCHIVE_KEY = 'shilan-invoice-v2-archive';
+  var CONTACTS_KEY = 'shilan-invoice-v2-contacts';
   var ARCHIVE_LIMIT = 300;
 
   /* ───────────────── وضعیت پیش‌فرض ───────────────── */
@@ -212,6 +212,8 @@
   function renderPreview() {
     var t = computeTotals();
     var cur = state.invoice.currency;
+    setOut('invoice.currency', cur);
+    $('#editorPayable').textContent = Fa.formatMoney(t.payable) + ' ' + cur;
 
     ['seller.name', 'seller.tagline', 'seller.phone', 'seller.address', 'seller.regNo',
       'seller.iban', 'seller.account', 'seller.bank',
@@ -368,8 +370,8 @@
   var stacked = window.matchMedia('(max-width: 900px)');
 
   /* 'fit' = کل برگه در ارتفاع پنجره، 'full' = اندازه واقعی (با اسکرول پیش‌نمایش) */
-  var zoomMode = 'fit';
-  try { zoomMode = localStorage.getItem(ZOOM_KEY) === 'full' ? 'full' : 'fit'; } catch (e) { /* پیش‌فرض */ }
+  var zoomMode = 'full';
+  try { zoomMode = localStorage.getItem(ZOOM_KEY) === 'fit' ? 'fit' : 'full'; } catch (e) { /* پیش‌فرض */ }
 
   /** ارتفاع نوار بالا را اندازه می‌گیرد تا پیش‌نمایش دقیقاً زیر آن بچسبد */
   function updateTopbarHeight() {
@@ -395,7 +397,8 @@
     if (!stacked.matches && zoomMode === 'fit') {
       var availableH = previewWrap.clientHeight
         - parseFloat(styles.paddingTop || 0)
-        - parseFloat(styles.paddingBottom || 0);
+        - parseFloat(styles.paddingBottom || 0)
+        - $('.preview-toolbar').offsetHeight - 20;
       if (availableH > 0) scale = Math.min(scale, availableH / A4_HEIGHT_PX);
     }
 
@@ -598,6 +601,7 @@
     head.addEventListener('click', function () {
       var card = head.parentElement;
       card.dataset.open = card.dataset.open === 'true' ? 'false' : 'true';
+      head.setAttribute('aria-expanded', card.dataset.open);
     });
   });
 
@@ -861,7 +865,7 @@
      که این قابلیت را ندارند (مثل سافاری/آیفون)، آرشیو فقط در همین مرورگر
      (localStorage) ذخیره می‌شود؛ کد قبلی مربوط به آن دست‌نخورده باقی مانده است. */
 
-  var FOLDER_DB_NAME = 'shilan-invoice-fs';
+  var FOLDER_DB_NAME = 'shilan-invoice-v2-fs';
   var FOLDER_DB_STORE = 'handles';
   var FOLDER_DB_KEY = 'archiveDir';
 
@@ -1058,8 +1062,17 @@
   var saveTimer = null;
   function save() {
     clearTimeout(saveTimer);
+    $('#saveStatus').textContent = 'در حال ذخیره…';
+    $('#saveStatus').dataset.state = 'pending';
     saveTimer = setTimeout(function () {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* بی‌اهمیت */ }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        $('#saveStatus').textContent = 'تغییرات روی این دستگاه ذخیره شد';
+        $('#saveStatus').dataset.state = 'saved';
+      } catch (e) {
+        $('#saveStatus').textContent = 'ذخیره نشد؛ از منوی بیشتر، فایل را ذخیره کنید';
+        $('#saveStatus').dataset.state = 'error';
+      }
     }, 250);
   }
 

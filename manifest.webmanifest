@@ -1,17 +1,21 @@
 {
-  "name": "Leon Food",
-  "short_name": "Leon Food",
+  "name": "فاکتور فروش ۲",
+  "short_name": "فاکتور ۲",
   "description": "صدور فاکتور فروش فارسی با محاسبه خودکار و خروجی PDF در قطع A4",
   "lang": "fa",
   "dir": "rtl",
   "start_url": "./",
   "scope": "./",
-  "id": "shilan-sales-invoice",
+  "id": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#ffffff",
-  "theme_color": "#00652e",
-  "categories": ["business", "productivity", "finance"],
+  "background_color": "#f5f6f4",
+  "theme_color": "#24594e",
+  "categories": [
+    "business",
+    "productivity",
+    "finance"
+  ],
   "icons": [
     {
       "src": "assets/icons/icon-192.png",
