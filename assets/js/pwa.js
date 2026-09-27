@@ -89,7 +89,7 @@
     modal.hidden = true;
     document.body.style.overflow = '';
     if (lastFocused && !lastFocused.closest('details:not([open])') && lastFocused.getClientRects().length) lastFocused.focus();
-    else document.querySelector('#moreMenu summary').focus();
+    else document.getElementById('tab-settings').focus();
   }
 
   button.addEventListener('click', openModal);

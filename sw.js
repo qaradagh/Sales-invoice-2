@@ -4,7 +4,7 @@
    حافظه می‌آیند. فایل‌های ثابت از حافظه می‌آیند و در پس‌زمینه به‌روز می‌شوند.
    ========================================================================== */
 
-var VERSION = 'v2.0.1';
+var VERSION = 'v2.1.0';
 var CACHE_PREFIX = 'sales-invoice-2-' + self.registration.scope + '-';
 var CACHE = CACHE_PREFIX + VERSION;
 

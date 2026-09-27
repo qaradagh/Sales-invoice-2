@@ -726,12 +726,15 @@
     });
   }
 
+  var archiveOpener = null;
   function openArchiveModal() {
+    archiveOpener = document.activeElement;
     renderArchiveList();
     var modal = $('#archiveModal');
     if (!modal) return;
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
+    modal.querySelector('[data-archive-close].modal__close').focus();
   }
 
   function closeArchiveModal() {
@@ -739,6 +742,7 @@
     if (!modal) return;
     modal.hidden = true;
     document.body.style.overflow = '';
+    if (archiveOpener && archiveOpener.focus) archiveOpener.focus();
   }
 
   (function wireArchiveModal() {
