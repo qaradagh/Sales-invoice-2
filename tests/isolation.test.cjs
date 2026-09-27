@@ -15,7 +15,7 @@ function worker(overrides = {}) {
       addEventListener: (name, handler) => { events[name] = handler; },
       clients: { claim: async () => {} }, skipWaiting: async () => {} },
     caches: {
-      keys: async () => ['faktor-v6', 'unrelated-app', 'sales-invoice-2-https://example.com/-old', 'sales-invoice-2-' + scope + '-old', 'sales-invoice-2-' + scope + '-v2.0.0'],
+      keys: async () => ['faktor-v6', 'unrelated-app', 'sales-invoice-2-https://example.com/-old', 'sales-invoice-2-' + scope + '-old', context.CACHE],
       delete: async key => { deleted.push(key); },
       open: async key => { opened.push(key); return { match: async () => 'version-2-only', addAll: async () => {} }; }
     },
