@@ -41,8 +41,15 @@ test('offline navigation uses only the v2 cache', async () => {
 });
 test('offline shell includes every local dependency, including compact navigation', () => {
   const { context } = worker();
-  assert.ok(context.SHELL.includes('./assets/js/ui.js'));
-  for (const file of context.SHELL) assert.ok(fs.existsSync(path.join(root, file)), file);
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const cached = new Set(context.SHELL.map(file => new URL(file, scope).href));
+  for (const [, resource] of html.matchAll(/(?:src|href)="((?:assets\/|manifest\.)[^"#]+)"/g)) {
+    assert.ok(cached.has(new URL(resource, scope).href), 'Missing offline dependency: ' + resource);
+  }
+  const exporter = fs.readFileSync(path.join(root, 'assets/js/export.js'), 'utf8');
+  const exportStyles = exporter.match(/fetch\('(assets\/css\/[^']+)'\)/)[1];
+  assert.ok(cached.has(new URL(exportStyles, scope).href), 'Missing export stylesheet');
+  for (const file of context.SHELL) assert.ok(fs.existsSync(path.join(root, file.split('?')[0])), file);
 });
 test('draft, archive, contacts, preferences, and folder connection have separate v2 keys', () => {
   const app = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');

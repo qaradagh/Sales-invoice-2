@@ -4,21 +4,21 @@
    حافظه می‌آیند. فایل‌های ثابت از حافظه می‌آیند و در پس‌زمینه به‌روز می‌شوند.
    ========================================================================== */
 
-var VERSION = 'v2.1.0';
+var VERSION = 'v2.1.1';
 var CACHE_PREFIX = 'sales-invoice-2-' + self.registration.scope + '-';
 var CACHE = CACHE_PREFIX + VERSION;
 
 var SHELL = [
   './',
   './index.html',
-  './manifest.webmanifest',
-  './assets/css/app.css',
+  './manifest.webmanifest?v=2.1.1',
+  './assets/css/app.css?v=2.1.1',
   './assets/js/jalali.js',
   './assets/js/persian.js',
-  './assets/js/app.js',
-  './assets/js/export.js',
-  './assets/js/pwa.js',
-  './assets/js/ui.js',
+  './assets/js/app.js?v=2.1.1',
+  './assets/js/export.js?v=2.1.1',
+  './assets/js/pwa.js?v=2.1.1',
+  './assets/js/ui.js?v=2.1.1',
   './assets/img/logo.svg',
   './assets/icons/icon.svg',
   './assets/icons/icon-192.png',
